@@ -1,0 +1,4 @@
+
+steamship_langchain==0.0.10rc3
+bs4
+pypdf

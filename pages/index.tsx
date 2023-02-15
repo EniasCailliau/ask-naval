@@ -4,20 +4,18 @@ import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
-import DropDown, { VibeType } from "../components/DropDown";
 import Github from "../components/GitHub";
 import LoadingDots from "../components/LoadingDots";
 import ResizablePanel from "../components/ResizablePanel";
 
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(false);
-  const [bio, setBio] = useState("");
-  const [vibe, setVibe] = useState<VibeType>("Professional");
-  const [generatedBios, setGeneratedBios] = useState<String[]>([]);
+  const [question, setQuestion] = useState("");
+  const [generatedAnswers, setGeneratedAnswers] = useState<String[]>([]);
 
   const generateBio = async (e: any) => {
     e.preventDefault();
-    setGeneratedBios("");
+    setGeneratedAnswers("");
     setLoading(true);
 
     const response = await fetch("/api/generate", {
@@ -25,7 +23,7 @@ const Home: NextPage = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({bio, vibe})
+      body: JSON.stringify({question})
     });
 
     if (!response.ok) {
@@ -46,7 +44,7 @@ const Home: NextPage = () => {
   return (
     <div className="flex max-w-5xl mx-auto flex-col items-center justify-center py-2 min-h-screen">
       <Head>
-        <title>Twitter Bio Generator</title>
+        <title>Ask Naval Ravikant</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -61,49 +59,41 @@ const Home: NextPage = () => {
           <p>Star on GitHub</p>
         </a>
         <h1 className="sm:text-6xl text-4xl max-w-2xl font-bold text-slate-900">
-          Generate your next Twitter bio in seconds
+          Ask Naval
         </h1>
-        <p className="text-slate-500 mt-5">47,118 bios generated so far.</p>
-        <div className="max-w-xl w-full">
-          <div className="flex mt-10 items-center space-x-3">
-            <Image
-              src="/1-black.png"
-              width={30}
-              height={30}
+        <Image
+              src="/naval.png"
+              width={200}
+              height={200}
               alt="1 icon"
               className="mb-5 sm:mb-0"
             />
+        <p className="text-slate-500 mt-5">Pick the brain of Naval.</p>
+        <div className="max-w-xl w-full">
+          <div className="flex mt-10 items-center space-x-3">
             <p className="text-left font-medium">
-              Copy your current bio{" "}
-              <span className="text-slate-500">
-                (or write a few sentences about yourself)
-              </span>
-              .
+              ❓ What's your question?{" "}
+              {/* <span className="text-slate-500">
+                (or click the here random question)
+              </span> */}
             </p>
           </div>
           <textarea
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
             rows={4}
             className="w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black my-5"
             placeholder={
-              "e.g. Senior Developer Advocate @vercel. Tweeting about web development, AI, and React / Next.js. Writing nutlope.substack.com."
+              "e.g. What is specific knowledge?"
             }
           />
-          <div className="flex mb-5 items-center space-x-3">
-            <Image src="/2-black.png" width={30} height={30} alt="1 icon" />
-            <p className="text-left font-medium">Select your vibe.</p>
-          </div>
-          <div className="block">
-            <DropDown vibe={vibe} setVibe={(newVibe) => setVibe(newVibe)} />
-          </div>
 
           {!loading && (
             <button
               className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/80 w-full"
               onClick={(e) => generateBio(e)}
             >
-              Generate your bio &rarr;
+              Get your answer &rarr;
             </button>
           )}
           {loading && (
@@ -124,27 +114,27 @@ const Home: NextPage = () => {
         <ResizablePanel>
           <AnimatePresence mode="wait">
             <motion.div className="space-y-10 my-10">
-              {generatedBios && (
+              {generatedAnswers && (
                 <>
                   <div>
                     <h2 className="sm:text-4xl text-3xl font-bold text-slate-900 mx-auto">
-                      Your generated bios
+                      Your generated answers
                     </h2>
                   </div>
                   <div className="space-y-8 flex flex-col items-center justify-center max-w-xl mx-auto">
-                    {generatedBios.map((generatedBio) => {
+                    {generatedAnswers.map((generatedAnswer) => {
                         return (
                           <div
                             className="bg-white rounded-xl shadow-md p-4 hover:bg-gray-100 transition cursor-copy border"
                             onClick={() => {
                               navigator.clipboard.writeText(generatedBio as string);
-                              toast("Bio copied to clipboard", {
+                              toast("Answer copied to clipboard", {
                                 icon: "✂️",
                               });
                             }}
-                            key={generatedBio as string}
+                            key={generatedAnswer as string}
                           >
-                            <p>{generatedBio}</p>
+                            <p>{generatedAnswer}</p>
                           </div>
                         );
                       })}

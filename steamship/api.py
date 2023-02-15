@@ -1,64 +1,89 @@
-from enum import Enum
 from typing import List
+
+from langchain import PromptTemplate
+from langchain.chains import ChatVectorDBChain
+from langchain.chains.llm import LLMChain
+from langchain.chains.question_answering import load_qa_chain
 from steamship import Steamship
 from steamship.invocable import PackageService, post
+from steamship_langchain import OpenAI
+from steamship_langchain.vectorstores import SteamshipVectorStore
 
 
-class Vibe(str, Enum):
-    professional = "Professional"
-    casual = "Casual"
-    funny = "Funny"
+class AskMyBook(PackageService):
 
-class TwitterBioGeneratorPackage(PackageService):
+    def __init__(
+            self,
+            *args,
+            **kwargs
+    ):
+        super().__init__(*args, **kwargs)
+        self.qa_chain = self._get_chain()
+
+    def _get_chain(self):
+        doc_index = SteamshipVectorStore(client=self.client,
+                                         index_name="ask-naval",
+                                         embedding="text-embedding-ada-002"
+                                         )
+        condense_question_prompt_template = """Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
+
+        Chat History:
+        {chat_history}
+        Follow Up Input: {question}
+        Standalone question:"""
+        condense_question_prompt = PromptTemplate.from_template(condense_question_prompt_template)
+
+        qa_prompt_template = """I want you to ANSWER a QUESTION based on the following pieces of CONTEXT. 
+
+        If you don't know the answer, just say that you don't know, don't try to make up an answer.
+        
+        Your ANSWER should be analytical and straightforward. 
+        Try to share deep, thoughtful insights and explain complex ideas in a simple and concise manner. 
+        When appropriate use analogies and metaphors to illustrate your point. 
+        Your ANSWER should have a strong focus on clarity, logic, and brevity.
+    
+    
+        CONTEXT: {context}
+        
+        QUESTION: {question}
+        ANSWER:
+        """
+        qa_prompt = PromptTemplate(
+            template=qa_prompt_template, input_variables=["context", "question"]
+        )
+
+        doc_chain = load_qa_chain(OpenAI(client=self.client, temperature=0, verbose=True),
+                                  chain_type="stuff",
+                                  prompt=qa_prompt,
+                                  verbose=True)
+        question_chain = LLMChain(  # Chain to condense previous input
+            llm=OpenAI(client=self.client, temperature=0, verbose=True),
+            prompt=condense_question_prompt,
+        )
+        return ChatVectorDBChain(
+            vectorstore=doc_index,
+            combine_docs_chain=doc_chain,
+            question_generator=question_chain,
+        )
+
     @post("/generate")
-    def generate(self, bio: str = "", vibe: Vibe = Vibe.professional) -> List[str]:
+    def generate(self, question: str = "") -> List[str]:
         """Returns a Twitter bio of the desired vibe."""
-        
-        if type(vibe) == str:
-            vibe = Vibe(vibe)
+        chat_history = []
+        result = self.qa_chain(
+            {"question": "What is specific knowledge", "chat_history": chat_history}
+        )
 
-        bio = bio.strip()
-        if len(bio) and bio[-1] != '.':
-            bio = f"{bio}."
-
-
-        prompt_prefix = f"Generate 2 {vibe.value} twitter bios with no hashtags and clearly labeled \"1.\" and \"2.\". "
-        prompt_suffix = f"Make sure each generated bio is at least 14 words and at max 20 words and base them on this context: {bio}"
-        prompt_infix = f""
-
-        if vibe == Vibe.funny:
-            prompt_infix = "Make sure there is a joke in there and it's a little ridiculous. "
-
-        prompt = f"{prompt_prefix}{prompt_infix}{prompt_suffix}"
-
-        llm = self.client.use_plugin('gpt-3', config={
-            "max_words": 80
-        })
-        
-        output = llm.generate(prompt)
-
-        # Now parse the output.
-        parts = output.split('2.')
-        if len(parts) != 2:
-            return [output]
-        
-        first_one = parts[0].strip()
-        second_one = parts[1].strip()
-
-        if '1.' in first_one:
-            first_one = first_one.split('1.')[1].strip()
-
-        return [first_one, second_one]
+        return [result["answer"]]
 
 
 if __name__ == "__main__":
-    print("Generating bios...")
-    package = TwitterBioGeneratorPackage(Steamship())
+    package = AskMyBook(client=Steamship(), config=None)
     bios = package.generate(
-        bio="Senior Developer Advocate @vercel. Tweeting about web development, AI, and React / Next.js. Writing nutlope.substack.com.",
-        vibe = Vibe.professional
+        question="What is specific knowledge?",
     )
     for bio in bios:
         print(f"- {bio}")
 
-    print("\nAfter customizing this backend, run `ship deploy` to push it to the cloud, then use from your NextJS functions.")
+    print(
+        "\nAfter customizing this backend, run `ship deploy` to push it to the cloud, then use from your NextJS functions.")

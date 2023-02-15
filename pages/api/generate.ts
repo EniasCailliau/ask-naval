@@ -3,7 +3,7 @@ import { getSteamshipPackage } from '@steamship/steamship-nextjs'
 
 
 export default async function handler(req: NextRequest, res: NextResponse) {
-  const { bio, vibe } = req.body as any;
+  const { question } = req.body as any;
 
   // Fetch a stub to the Steamship-hosted backend.
   // Use a different workspace name per-user to provide data isolation.
@@ -14,7 +14,7 @@ export default async function handler(req: NextRequest, res: NextResponse) {
 
   try {
     // Invoke a method on the package defined in steamship/api.py. Full syntax: pkg.invoke("method", {args}, "POST" | "GET")
-    const resp = await pkg.invoke('generate', {bio, vibe})
+    const resp = await pkg.invoke('generate', {question})
 
     // The resp object is an Axios response object. The .data field can be binary, JSON, text, etc.
     // For example, it's just text -- see steamship/api.py for where it's produced and returned.
