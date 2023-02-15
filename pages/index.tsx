@@ -15,7 +15,7 @@ const Home: NextPage = () => {
 
   const generateBio = async (e: any) => {
     e.preventDefault();
-    setGeneratedAnswers("");
+    setGeneratedAnswers([""]);
     setLoading(true);
 
     const response = await fetch("/api/generate", {
@@ -36,7 +36,7 @@ const Home: NextPage = () => {
       return;
     }
 
-    setGeneratedBios(bios)
+    setGeneratedAnswers(bios)
 
     setLoading(false);
   };
