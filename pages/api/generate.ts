@@ -9,6 +9,7 @@ export default async function handler(req: NextRequest, res: NextResponse) {
   // Use a different workspace name per-user to provide data isolation.
   const pkg = await getSteamshipPackage({
     workspace: 'use-unique-workspace-handle-per-user', 
+    version: '0.0.2',
     pkg: process.env.STEAMSHIP_PACKAGE_HANDLE as string
   })
 

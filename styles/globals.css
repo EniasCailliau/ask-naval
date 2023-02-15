@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+p {
+    text-align: left;
+    font-weight: 900;
+  }
