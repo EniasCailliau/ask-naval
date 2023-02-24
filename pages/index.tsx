@@ -7,38 +7,65 @@ import { Toaster, toast } from "react-hot-toast";
 import Github from "../components/GitHub";
 import LoadingDots from "../components/LoadingDots";
 import ResizablePanel from "../components/ResizablePanel";
+import Source from "../components/Source";
+
 
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(false);
   const [question, setQuestion] = useState("");
-  const [generatedAnswers, setGeneratedAnswers] = useState<String[]>([]);
+  const [answer, setAnswer] = useState<String>("");
+  const [sources, setSources] = useState([]);
+
+  const pollMessage = async (taskId: string, workspace: string) => {
+    const response = await fetch('/api/check_job', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify({taskId, workspace})
+    })
+
+    if (!response.ok) {
+      setLoading(false);
+      return;
+    }
+
+    const {state, statusMessage, output} = await response.json()
+
+    if (state == 'succeeded') {
+      setLoading(false);
+      const {answer, sources} = JSON.parse(output)
+      setAnswer(answer)
+      setSources(sources)
+    } else if (state == 'failed') {
+      setLoading(false);
+      throw new Error(statusMessage);
+    } else if (state == 'running') {
+      setTimeout(async () => {
+        pollMessage(taskId, workspace)
+      }, 300);
+    }
+  }
 
   const generateBio = async (e: any) => {
     e.preventDefault();
-    setGeneratedAnswers([""]);
     setLoading(true);
+    setAnswer("");
+    setSources([])
 
-    const response = await fetch("/api/generate", {
+    const response = await fetch("/api/submit_job", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({question})
+      body: JSON.stringify({question: question})
     });
 
     if (!response.ok) {
+      setLoading(false)
       throw new Error(response.statusText);
     }
 
-    // This data is a ReadableStream
-    const {bios} = await response.json();
-    if (!bios) {
-      return;
-    }
-
-    setGeneratedAnswers(bios)
-
-    setLoading(false);
+    const {taskId, workspace, error} = await response.json()
+    pollMessage(taskId, workspace)
   };
 
   return (
@@ -63,19 +90,16 @@ const Home: NextPage = () => {
         </h1>
         <Image
               src="/naval.png"
-              width={200}
-              height={200}
+              width={300}
+              height={300}
               alt="1 icon"
-              className="mb-5 sm:mb-0"
+              className="p-4 sm:mb-0"
             />
-        <p className="text-slate-500 mt-5">Pick the brain of Naval.</p>
+        <p className="text-slate-500">Pick the 🧠 of Naval.</p>
         <div className="max-w-xl w-full">
           <div className="flex mt-10 items-center space-x-3">
             <p className="text-left font-medium">
               ❓ What's your question?{" "}
-              {/* <span className="text-slate-500">
-                (or click the here random question)
-              </span> */}
             </p>
           </div>
           <textarea
@@ -114,30 +138,32 @@ const Home: NextPage = () => {
         <ResizablePanel>
           <AnimatePresence mode="wait">
             <motion.div className="space-y-10 my-10">
-              {generatedAnswers && (
+              {answer && (
                 <>
                   <div>
                     <h2 className="sm:text-4xl text-3xl font-bold text-slate-900 mx-auto">
-                      Your generated answers
+                      Naval's answer:
                     </h2>
                   </div>
                   <div className="space-y-8 flex flex-col items-center justify-center max-w-xl mx-auto">
-                    {generatedAnswers.map((generatedAnswer) => {
-                        return (
                           <div
-                            className="bg-white rounded-xl shadow-md p-4 hover:bg-gray-100 transition cursor-copy border"
-                            onClick={() => {
-                              navigator.clipboard.writeText(generatedAnswer as string);
-                              toast("Answer copied to clipboard", {
-                                icon: "✂️",
-                              });
-                            }}
-                            key={generatedAnswer as string}
+                            className="bg-white rounded-xl shadow-md p-4 transition border"
+                            key={answer as string}
                           >
-                            <p>{generatedAnswer}</p>
+                            <p className="text-left">{answer}</p>
+                            {sources.map((source_doc, index) => {
+                              const {page_content, metadata} = source_doc
+                              const {page, source} = metadata
+                              return (
+                                   <Source index={index+1} page={page} page_content={page_content} source={source} />
+                              )
+                        })}
                           </div>
-                        );
-                      })}
+
+
+<div>
+                          
+                        </div>
                   </div>
                 </>
               )}

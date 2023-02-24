@@ -30,24 +30,25 @@ const Layout: FC<LayoutProps> = ({
       <div className="px-8 bg-accents-0">{children}</div>
 
       <footer className="py-10 w-full mt-auto border-t flex items-center justify-center bg-accents-1 z-20">
-        <span className="text-primary">Created by</span>
+      <Logo
+            className="inline-block h-6 mr-1 text-primary"
+          /> 
+        <span className="text-primary">Created by:&nbsp;</span> 
         <a
-          href="https://steamship.com"
-          aria-label="Steamship.com Link"
+          href="mailto:enias@steamship.com"
+          aria-label="Enias e-mail"
           target="_blank"
           rel="noreferrer"
-          className="text-black "
+          className="text-blue-600"
         >
-          <Logo
-            className="inline-block h-6 ml-3 text-primary"
-          /> Steamship
+          Enias@Steamship
         </a>. Based on the
         <a
-          href="https://vercel.com/templates/next.js/twitter-bio"
+          href="https://github.com/steamship-core/vercel-examples/tree/main/prompt-app"
           target="_blank"
           rel="noreferrer"
-          className="text-black ml-1 mr-1"
-        > the twitter-bio
+          className="text-blue-600 ml-1 mr-1"
+        > prompt-app
         </a> template.
 
       </footer>

@@ -1,12 +1,11 @@
 import type { AppProps } from 'next/app'
 import { Analytics } from '@vercel/analytics/react'
 
-import Layout, { getLayout } from '../components/Layout'
+import Layout from '../components/Layout'
 
 import '@vercel/examples-ui/globals.css'
 
 function App({ Component, pageProps }: AppProps) {
-  // const Layout = getLayout<LayoutProps>(Component)
 
   return (
     <Layout

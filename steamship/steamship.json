@@ -1,7 +1,7 @@
 {
 	"type": "package",
-	"handle": "ask-my-book-api",
-	"version": "0.0.2",
+	"handle": "ask-naval",
+	"version": "0.0.6",
 	"description": null,
 	"author": "Enias",
 	"entrypoint": "Unused",
@@ -13,7 +13,13 @@
 			"examples"
 		]
 	},
-	"configTemplate": {},
+	"configTemplate": {
+		"index_name": {
+			"type": "string",
+			"description": null,
+			"default": null
+		}
+	},
 	"steamshipRegistry": {
 		"tagline": "Example using Steamship to Deploy LangChain",
 		"tagline2": null,
@@ -29,7 +35,6 @@
 		"authorTwitter": null,
 		"authorUrl": null,
 		"tags": [
-			"Prompt API",
 			"LangChain",
 			"ChatBot"
 		]
