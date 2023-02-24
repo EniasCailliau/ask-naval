@@ -64,7 +64,7 @@ export default function Nav({ path, deployButton }: NavProps) {
                 More Examples →
               </Button>
             </span>
-          </nav>
+npm          </nav>
         </div>
       </div>
     </nav>

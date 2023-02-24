@@ -5,6 +5,9 @@ export default function Source({ index, page, page_content, source }: { index?: 
 
   const [visible,setVisible]=useState(false)
 
+  var parsed_content = page_content?.replace(/↓/g,'\n');
+
+
   return (
      <div>
     <p className="text-left pt-2  text-blue-600 hover:underline" onClick={()=>setVisible(true)}>
@@ -20,15 +23,10 @@ export default function Source({ index, page, page_content, source }: { index?: 
       <Modal.Body>
         <div className="space-y-6">
           <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-            {page_content}
+            {parsed_content}
           </p>
         </div>
       </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={()=>setVisible(false)}>
-          I accept
-        </Button>
-      </Modal.Footer>
     </Modal>
   </div> 
   );
