@@ -16,7 +16,6 @@ const Home: NextPage = () => {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState<String>("");
   const [sources, setSources] = useState([]);
-  const [showAlert,setShowAlert]=useState(true)
 
 
   const pollMessage = async (taskId: string, workspace: string) => {
@@ -93,7 +92,7 @@ const Home: NextPage = () => {
               alt="1 icon"
               className="p-4 sm:mb-0"
             />
-        <p className="text-slate-500">Pick the 🧠 of Naval.</p>
+        <p className="text-slate-500">Pick Naval's 🧠.</p>
         <div className="max-w-xl w-full">
           <div className="flex mt-10 items-center space-x-3">
             <p className="text-left font-medium">
