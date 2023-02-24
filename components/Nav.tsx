@@ -64,14 +64,6 @@ export default function Nav({ path, deployButton }: NavProps) {
                 More Examples →
               </Button>
             </span>
-            <span className="ml-2 h-full flex items-center cursor-not-allowed text-accents-5">
-              <DeployButton
-                {...deployButton}
-                repositoryUrl={repositoryUrl}
-                projectName={deployButton?.projectName || path}
-                repositoryName={deployButton?.repositoryName || path}
-              />
-            </span>
           </nav>
         </div>
       </div>
