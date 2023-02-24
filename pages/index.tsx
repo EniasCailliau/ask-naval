@@ -8,13 +8,15 @@ import Github from "../components/GitHub";
 import LoadingDots from "../components/LoadingDots";
 import ResizablePanel from "../components/ResizablePanel";
 import Source from "../components/Source";
-
+import {Alert} from "flowbite-react";
 
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(false);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState<String>("");
   const [sources, setSources] = useState([]);
+  const [showAlert,setShowAlert]=useState(true)
+
 
   const pollMessage = async (taskId: string, workspace: string) => {
     const response = await fetch('/api/check_job', {
@@ -70,21 +72,29 @@ const Home: NextPage = () => {
 
   return (
     <div className="flex max-w-5xl mx-auto flex-col items-center justify-center py-2 min-h-screen">
+      
+
+
       <Head>
         <title>Ask Naval Ravikant</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 mt-12 sm:mt-20">
-        <a
-          className="flex max-w-fit items-center justify-center space-x-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm text-gray-600 shadow-md transition-colors hover:bg-gray-100 mb-5"
-          href="https://github.com/EniasCailliau/ask-naval"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Github />
-          <p>Star on GitHub</p>
-        </a>
+      {showAlert && <Alert
+  color="success"
+  hidden={showAlert}
+  additionalContent={<div>
+    <div className="mt-2 mb-4 text-sm text-green-700 dark:text-green-800">You can build your own "ask-my-book" website using Steamship.</div>
+    <div className="flex">
+      <a href="https://www.steamship.com/build/ask-my-book-site?utm_source=vercel&utm_campaign=ask_naval_personal_li_post&utm_id=ask_naval" type="button" className="mr-2 inline-flex items-center rounded-lg bg-green-700 px-3 py-1.5 text-center text-xs font-medium text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 dark:bg-green-800 dark:hover:bg-green-900">
+    Learn more</a><button onClick={()=>setShowAlert(false)} type="button" className="rounded-lg border border-green-700 bg-transparent px-3 py-1.5 text-center text-xs font-medium text-green-700 hover:bg-green-800 hover:text-white focus:ring-4 focus:ring-green-300 dark:border-green-800 dark:text-green-800 dark:hover:text-white">Dismiss</button></div></div>}
+>
+  <h3 className="text-lg font-medium text-green-700 dark:text-green-800">
+    Build your own ask-my-book site
+  </h3>
+</Alert>}
+      <main className="flex flex-1 w-full flex-col items-center justify-center text-center">
+
         <h1 className="sm:text-6xl text-4xl max-w-2xl font-bold text-slate-900">
           Ask Naval
         </h1>
@@ -145,7 +155,7 @@ const Home: NextPage = () => {
                       Naval's answer:
                     </h2>
                   </div>
-                  <div className="space-y-8 flex flex-col items-center justify-center max-w-xl mx-auto">
+                  <div className="space-y-8 flex flex-col items-center justify-center min-w-xl max-w-xl mx-auto">
                           <div
                             className="bg-white rounded-xl shadow-md p-4 transition border"
                             key={answer as string}
