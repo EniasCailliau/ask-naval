@@ -1,10 +1,7 @@
-# Prompt Chaining App with Vercel, OpenAI, and Steamship
+# Ask Naval [![Steamship](https://raw.githubusercontent.com/steamship-core/python-client/main/badge.svg)](https://www.steamship.com/build/langchain-on-vercel?utm_source=github&utm_medium=badge&utm_campaign=ask_naval_repo&utm_id=ask_naval_repo)
 
-[![Steamship](https://raw.githubusercontent.com/steamship-core/python-client/main/badge.svg)](https://www.steamship.com/build/langchain-on-vercel?utm_source=github&utm_medium=badge&utm_campaign=github_repo&utm_id=github_vercel_repo_prompt_app)
 
-This example shows how to implement a prompt chaining app using Next.js, API Routes, [OpenAI](https://beta.openai.com/docs/api-reference/completions/create), and [Steamship](https://www.steamship.com).
-
-This project generates Twitter bios for you using AI, based on the [Twitter Bio Generator](https://www.twitterbio.com) template.
+A Question Answering (QA) chatbot built with Vercel, OpenAI, and Steamship
 
 ![Screen Shot](https://steamship.com/data/templates/langchain-on-vercel/prompt-app-card.png)
 
