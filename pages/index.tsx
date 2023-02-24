@@ -9,6 +9,7 @@ import LoadingDots from "../components/LoadingDots";
 import ResizablePanel from "../components/ResizablePanel";
 import Source from "../components/Source";
 import {Alert} from "flowbite-react";
+import Banner from "../components/Banner"
 
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(false);
@@ -80,19 +81,6 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {showAlert && <Alert
-  color="success"
-  hidden={showAlert}
-  additionalContent={<div>
-    <div className="mt-2 mb-4 text-sm text-green-700 dark:text-green-800">You can build your own "ask-my-book" website using Steamship.</div>
-    <div className="flex">
-      <a href="https://www.steamship.com/build/ask-my-book-site?utm_source=vercel&utm_campaign=ask_naval_personal_li_post&utm_id=ask_naval" type="button" className="mr-2 inline-flex items-center rounded-lg bg-green-700 px-3 py-1.5 text-center text-xs font-medium text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 dark:bg-green-800 dark:hover:bg-green-900">
-    Learn more</a><button onClick={()=>setShowAlert(false)} type="button" className="rounded-lg border border-green-700 bg-transparent px-3 py-1.5 text-center text-xs font-medium text-green-700 hover:bg-green-800 hover:text-white focus:ring-4 focus:ring-green-300 dark:border-green-800 dark:text-green-800 dark:hover:text-white">Dismiss</button></div></div>}
->
-  <h3 className="text-lg font-medium text-green-700 dark:text-green-800">
-    Build your own ask-my-book site
-  </h3>
-</Alert>}
       <main className="flex flex-1 w-full flex-col items-center justify-center text-center">
 
         <h1 className="sm:text-6xl text-4xl max-w-2xl font-bold text-slate-900">

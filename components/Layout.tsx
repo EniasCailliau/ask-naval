@@ -3,6 +3,7 @@ import Head from 'next/head.js'
 import Nav, { NavProps } from './Nav'
 import Logo from './Steamship'
 import { ComponentType } from 'react'
+import Banner from "../components/Banner"
 
 export interface LayoutProps extends NavProps {
   children?: ReactNode
@@ -25,9 +26,9 @@ const Layout: FC<LayoutProps> = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Nav path={path} deployButton={deployButton} />
-
-      <div className="px-8 bg-accents-0">{children}</div>
+      <div className=" bg-accents-0">
+      <Banner/>
+        {children}</div>
 
       <footer className="py-10 w-full mt-auto border-t flex items-center justify-center bg-accents-1 z-20">
       <Logo
