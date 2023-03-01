@@ -169,7 +169,8 @@ const Home: NextPage = () => {
     status="online"
     statusPosition="bottom-right"
     size=""
-    className="mr-5 w-20"
+    className="mr-5 max-w-xs w-1/2"
+    style={{width: "20%"}}
   >
 </Avatar>
 
