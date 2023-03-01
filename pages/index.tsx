@@ -4,12 +4,9 @@ import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
-import Github from "../components/GitHub";
 import LoadingDots from "../components/LoadingDots";
 import ResizablePanel from "../components/ResizablePanel";
 import Source from "../components/Source";
-import {Alert} from "flowbite-react";
-import Banner from "../components/Banner"
 
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(false);
