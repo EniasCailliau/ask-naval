@@ -37,12 +37,12 @@ const Layout: FC<LayoutProps> = ({
         <span className="text-primary">Created by:&nbsp;</span> 
         <a
           href="mailto:enias@steamship.com"
-          aria-label="Enias e-mail"
+          aria-label="enias e-mail"
           target="_blank"
           rel="noreferrer"
           className="text-blue-600"
         >
-          Enias@Steamship
+          enias@steamship
         </a>. Based on the
         <a
           href="https://github.com/steamship-core/vercel-examples/tree/main/prompt-app"
@@ -51,7 +51,7 @@ const Layout: FC<LayoutProps> = ({
           className="text-blue-600 ml-1 mr-1"
         > prompt-app
         </a> template.
-
+    
       </footer>
     </div>
   )

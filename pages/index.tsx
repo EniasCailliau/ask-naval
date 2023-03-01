@@ -3,10 +3,11 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
-import { Toaster, toast } from "react-hot-toast";
 import LoadingDots from "../components/LoadingDots";
 import ResizablePanel from "../components/ResizablePanel";
 import Source from "../components/Source";
+import {Avatar, Button} from "flowbite-react"
+import { HiOutlineArrowRight, HiOutlineRefresh, HiOutlinePlus } from 'react-icons/hi';
 
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(false);
@@ -44,7 +45,7 @@ const Home: NextPage = () => {
     }
   }
 
-  const generateBio = async (e: any) => {
+  const generateAnswer = async (e: any) => {
     e.preventDefault();
     setLoading(true);
     setAnswer("");
@@ -68,7 +69,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="flex max-w-5xl mx-auto flex-col items-center justify-center py-2 min-h-screen">
+    <div className="max-w-5xl mx-auto justify-center py-2 min-h-screen">
       
 
 
@@ -77,7 +78,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-1 w-full flex-col items-center justify-center text-center">
+      <main className="flex flex-1 w-xl flex-col items-center justify-center text-center">
 
         <h1 className="sm:text-6xl text-4xl max-w-2xl font-bold text-slate-900">
           Ask Naval
@@ -90,68 +91,104 @@ const Home: NextPage = () => {
               className="p-4 sm:mb-0"
             />
         <p className="text-slate-500">Pick Naval's 🧠.</p>
-        <div className="max-w-xl w-full">
-          <div className="flex mt-10 items-center space-x-3">
+        <div className="max-w-5xl w-full">
+          <div className="flex mt-5 items-center space-x-3">
             <p className="text-left font-medium">
               ❓ What's your question?{" "}
             </p>
           </div>
-          <textarea
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            rows={4}
-            className="w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black my-5"
-            placeholder={
-              "e.g. What is specific knowledge?"
-            }
-          />
+          <div className="mt-6 flex clear-both">
+      <input
+        type="text"
+        aria-label="chat input"
+        placeholder={
+          "e.g. What is specific knowledge?"
+        }
+        className="min-w-0 flex-auto appearance-none rounded-md border border-zinc-900/10 bg-white px-3 py-[calc(theme(spacing.2)-1px)] shadow-md shadow-zinc-800/5 placeholder:text-zinc-400 focus:border-teal-500 focus:outline-none focus:ring-4 focus:ring-teal-500/10 sm:text-sm"
+        value={question}
 
-          {!loading && (
-            <button
-              className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/80 w-full"
-              onClick={(e) => generateBio(e)}
-            >
-              Get your answer &rarr;
-            </button>
-          )}
-          {loading && (
-            <button
-              className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/80 w-full"
-              disabled
-            >
-              <LoadingDots color="white" style="large" />
-            </button>
-          )}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            generateAnswer(e)
+          }
+        }}
+  
+        onChange={(e) => {
+          setQuestion(e.target.value)
+        }}
+      />
+      {!loading && (<Button
+        type="submit"
+        gradientDuoTone="greenToBlue"
+        className="ml-2"
+        onClick={(e) => {
+          console.log("generate answer")
+          generateAnswer(e)
+        }}
+      >
+      <HiOutlineArrowRight className="h-5 w-5" />
+      </Button>
+      )}
+
+      {loading && (
+                  <Button
+                  gradientDuoTone="greenToBlue"
+                  className="ml-2 h-20"
+                  disabled
+                  >
+                    <LoadingDots color="white" style="large" />
+                  </Button>
+                )}
+          </div>
         </div>
-        <Toaster
-          position="top-center"
-          reverseOrder={false}
-          toastOptions={{ duration: 2000 }}
-        />
         <hr className="h-px bg-gray-700 border-1 dark:bg-gray-700" />
         <ResizablePanel>
           <AnimatePresence mode="wait">
             <motion.div className="space-y-10 my-10">
               {answer && (
                 <>
-                  <div>
+                  <div className="flex flex-row">
                     <h2 className="sm:text-4xl text-3xl font-bold text-slate-900 mx-auto">
                       Naval's answer:
                     </h2>
+                    <Button  disabled={loading}   outline={true}
+               onClick={(e) => generateAnswer(e)}
+               gradientDuoTone="greenToBlue">
+          <HiOutlineRefresh className="h-5 w-5" />
+    </Button>
                   </div>
-                  <div className="space-y-8 flex flex-col items-center justify-center min-w-xl max-w-xl mx-auto">
+                  <div className="space-y-8 flex flex-col items-center justify-center min-w-5xl max-w-5xl mx-auto">
                           <div
-                            className="bg-white rounded-xl shadow-md p-4 transition border"
+                            className="flex flex-row bg-white rounded-xl w-full shadow-md p-4 transition border"
                             key={answer as string}
                           >
-                            <p className="text-left">{answer}</p>
-                            {sources.map((source_doc, index) => {
-                              const {page_content, metadata} = source_doc
-                              const {page, source} = metadata
-                              return (
-                                   <Source index={index+1} page={page} page_content={page_content} source={source} />
-                              )
-                        })}
+                              <Avatar
+                              
+    img="/naval.png"
+    rounded={true}
+    status="online"
+    statusPosition="bottom-right"
+    size=""
+    className="mr-5 w-20"
+  >
+</Avatar>
+
+
+<div className="space-y-1 min-w-0.9 text-left font-medium dark:text-white">
+    <div className="text-md">
+      <p className="">{answer}</p>
+      <div className="mt-3">
+      {sources.map((source_doc, index) => {
+  const {page_content, metadata} = source_doc
+  const {page, source} = metadata
+  return (
+       <Source index={index+1} page={page} page_content={page_content} source={source} />
+  )
+})}
+</div>
+    </div>
+  </div>
+                            
                           </div>
 
 

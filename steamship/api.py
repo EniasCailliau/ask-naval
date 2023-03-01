@@ -55,7 +55,7 @@ class AskMyBook(PackageService):
         return load_qa_with_sources_chain(OpenAI(client=self.client, temperature=0, verbose=True),
                                           chain_type="stuff",
                                           prompt=QA_PROMPT,
-                                          verbose=True)
+                                          verbose=False)
 
     @post("/answer")
     def answer(self, question: str = "") -> Dict[str, Any]:

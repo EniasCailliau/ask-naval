@@ -1,4 +1,4 @@
-import { Button, Modal } from "flowbite-react";
+import { Modal } from "flowbite-react";
 import { useState } from "react";
 
 export default function Source({ index, page, page_content, source }: { index?: number, page?: string, page_content?: string, source?: string }) {
@@ -9,9 +9,9 @@ export default function Source({ index, page, page_content, source }: { index?: 
 
 
   return (
-     <div>
+     <div key={index} >
     <p className="text-left pt-2  text-blue-600 hover:underline" onClick={()=>setVisible(true)}>
-      🧠 Source {index}
+      🧠 Source {index}: {source}  - Page {page}
     </p>
     <Modal
       show={visible}
