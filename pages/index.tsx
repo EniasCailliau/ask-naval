@@ -69,10 +69,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto justify-center py-2 min-h-screen">
-      
-
-
+    <div className="max-w-5xl mx-auto justify-center py-10 min-h-screen">
       <Head>
         <title>Ask Naval Ravikant</title>
         <link rel="icon" href="/favicon.ico" />
@@ -91,7 +88,7 @@ const Home: NextPage = () => {
               className="p-4 sm:mb-0"
             />
         <p className="text-slate-500">Pick Naval's 🧠.</p>
-        <div className="max-w-5xl w-full">
+        <div className="max-w-5xl w-full p-5">
           <div className="flex mt-5 items-center space-x-3">
             <p className="text-left font-medium">
               ❓ What's your question?{" "}
@@ -144,7 +141,7 @@ const Home: NextPage = () => {
         <hr className="h-px bg-gray-700 border-1 dark:bg-gray-700" />
         <ResizablePanel>
           <AnimatePresence mode="wait">
-            <motion.div className="space-y-10 my-10">
+            <motion.div className="p-5 space-y-10 my-10">
               {answer && (
                 <>
                   <div className="flex flex-row">
@@ -162,18 +159,11 @@ const Home: NextPage = () => {
                             className="flex flex-row bg-white rounded-xl w-full shadow-md p-4 transition border"
                             key={answer as string}
                           >
-                              <Avatar
-                              
-    img="/naval.png"
-    rounded={true}
-    status="online"
-    statusPosition="bottom-right"
-    size=""
-    className="mr-5 max-w-xs w-1/2"
-    style={{width: "20%"}}
-  >
-</Avatar>
 
+
+        <div className="flex-shrink-0 mr-5 align-middle m-auto">
+    <img className="w-20 h-20 rounded-full" src="/naval.png" alt=""/>
+</div>
 
 <div className="space-y-1 min-w-0.9 text-left font-medium dark:text-white">
     <div className="text-md">
